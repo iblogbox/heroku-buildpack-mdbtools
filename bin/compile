@@ -5,6 +5,5 @@ mkdir -p vendor
 tar -C vendor -xvf mdbtools-0.7.1.tar.gz
 
 build_dir=$1
-status "Setting PATH"
 mkdir -p $build_dir/.profile.d
 echo "export PATH=\"\$HOME/vendor/mdbtools/src/util:\$PATH\"" > $build_dir/.profile.d/mdbtools.sh

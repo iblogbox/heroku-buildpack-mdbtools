@@ -22,13 +22,15 @@ fi
 
 echo "-----> Installing wkhtmltopdf 0.12.2.1"
 mkdir -p $BUILD_DIR/.apt
+BIN_DIR=$(cd $(dirname $0); pwd)
+FONTS_DIR=$(cd "$BIN_DIR/../fonts"; pwd)
 dpkg -x $DEB $BUILD_DIR/.apt/
 
 echo "-----> Installing fonts"
-mkdir -p /app/.fonts
-apt-get install ttf-unfonts-core ttf-unfonts-extra
-fc-cache -f -v
-fc-cache -f /app/.fonts
+mkdir -p $1/.fonts
+ls $FONTS_DIR
+cp $FONTS_DIR/* $1/.fonts/
+fc-cache -f $1/.fonts
 
 echo "Writing profile script" | indent
 mkdir -p $BUILD_DIR/.profile.d

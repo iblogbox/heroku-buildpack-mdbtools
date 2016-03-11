@@ -12,9 +12,6 @@ function indent() {
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-BIN_DIR=$(cd $(dirname $0); pwd)
-FONTS_DIR=$(cd "$BIN_DIR/../fonts"; pwd)
-
 DEB="$CACHE_DIR/wkhtmltopdf.deb"
 TS=`date +%s`
 if [ ! -f $DEB ]; then
@@ -27,12 +24,6 @@ echo "-----> Installing wkhtmltopdf 0.12.2.1"
 mkdir -p $BUILD_DIR/.apt
 dpkg -x $DEB $BUILD_DIR/.apt/
 
-echo "-----> Installing fonts"
-mkdir -p $1/.fonts
-ls $FONTS_DIR
-cp $FONTS_DIR/* $1/.fonts/
-fc-cache -f $1/.fonts
-
 echo "Writing profile script" | indent
 mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF >$BUILD_DIR/.profile.d/wkhtmltopdf.sh
@@ -44,3 +35,9 @@ export CPATH="\$INCLUDE_PATH"
 export CPPPATH="\$INCLUDE_PATH"
 export PKG_CONFIG_PATH="\$HOME/.apt/usr/local/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/local/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/local/lib/pkgconfig:\$PKG_CONFIG_PATH"
 EOF
+
+echo "-----> Installing fonts"
+apt-get install fonts-wqy-microhei ttf-wqy-microhei fonts-wqy-zenhei ttf-wqy-zenhei 
+apt-get install ttf-unfonts-core ttf-unfonts-extra
+apt-get install xfonts-baekmuk ttf-baekmuk
+fc-cache -f -v

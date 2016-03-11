@@ -25,10 +25,10 @@ mkdir -p $BUILD_DIR/.apt
 dpkg -x $DEB $BUILD_DIR/.apt/
 
 echo "-----> Installing fonts"
-mkdir -p $1/.fonts
+mkdir -p /app/.fonts
 apt-get install ttf-unfonts-core ttf-unfonts-extra
 fc-cache -f -v
-fc-cache -f $1/.fonts
+fc-cache -f /app/.fonts
 
 echo "Writing profile script" | indent
 mkdir -p $BUILD_DIR/.profile.d

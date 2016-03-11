@@ -12,6 +12,9 @@ function indent() {
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+BIN_DIR=$(cd $(dirname $0); pwd)
+FONTS_DIR=$(cd "$BIN_DIR/../fonts"; pwd)
+
 DEB="$CACHE_DIR/wkhtmltopdf.deb"
 TS=`date +%s`
 if [ ! -f $DEB ]; then
@@ -22,8 +25,6 @@ fi
 
 echo "-----> Installing wkhtmltopdf 0.12.2.1"
 mkdir -p $BUILD_DIR/.apt
-BIN_DIR=$(cd $(dirname $0); pwd)
-FONTS_DIR=$(cd "$BIN_DIR/../fonts"; pwd)
 dpkg -x $DEB $BUILD_DIR/.apt/
 
 echo "-----> Installing fonts"

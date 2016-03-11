@@ -12,6 +12,13 @@ function indent() {
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+echo "-----> Installing fonts"
+apt-get install fonts-wqy-microhei ttf-wqy-microhei fonts-wqy-zenhei ttf-wqy-zenhei 
+apt-get install ttf-unfonts-core ttf-unfonts-extra
+apt-get install xfonts-baekmuk ttf-baekmuk
+fc-cache -f -v
+
+
 DEB="$CACHE_DIR/wkhtmltopdf.deb"
 TS=`date +%s`
 if [ ! -f $DEB ]; then
@@ -35,9 +42,3 @@ export CPATH="\$INCLUDE_PATH"
 export CPPPATH="\$INCLUDE_PATH"
 export PKG_CONFIG_PATH="\$HOME/.apt/usr/local/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/local/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/local/lib/pkgconfig:\$PKG_CONFIG_PATH"
 EOF
-
-echo "-----> Installing fonts"
-apt-get install fonts-wqy-microhei ttf-wqy-microhei fonts-wqy-zenhei ttf-wqy-zenhei 
-apt-get install ttf-unfonts-core ttf-unfonts-extra
-apt-get install xfonts-baekmuk ttf-baekmuk
-fc-cache -f -v

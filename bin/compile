@@ -24,6 +24,10 @@ echo "-----> Installing wkhtmltopdf 0.12.2.1"
 mkdir -p $BUILD_DIR/.apt
 dpkg -x $DEB $BUILD_DIR/.apt/
 
+echo "-----> Installing fonts"
+apt-get install ttf-unfonts-core ttf-unfonts-extra
+fc-cache -f -v
+
 echo "Writing profile script" | indent
 mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF >$BUILD_DIR/.profile.d/wkhtmltopdf.sh

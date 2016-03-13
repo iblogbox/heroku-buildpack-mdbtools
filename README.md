@@ -1,71 +1,43 @@
-# Heroku Buildpack: wkhtmltopdf
+Heroku Buildpack: LibreOffice
+=============================
 
-This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for using [wkhtmltopdf](http://wkhtmltopdf.org/) in your application.
+Heroku buildpack for LibreOffice that can be used by [unoconv](https://github.com/dagwieers/unoconv), [docsplit](http://documentcloud.github.io/docsplit), etc.
 
-It is designed to be used with [heroku-buildpack-multi](https://github.com/ddollar/heroku-buildpack-multi) to combine it with the appropriate real buildpack for your app.
+Usage
+------
 
-This is based on https://github.com/jayzes/heroku-buildpack-pngquant.
+LibreOffice depends on Java, so the Java buildpack is needed. Hence, we have to create a [multipack](https://github.com/ddollar/heroku-buildpack-multi) app.
 
-### Versions
+    heroku create --buildpack https://github.com/ddollar/heroku-buildpack-multi.git
+    
+Next, add the Java buildpack, and this one to `.buildpacks`:
 
-The following wkhtmltopdf versions are available:
+    echo "https://github.com/heroku/heroku-buildpack-java.git
+    https://github.com/rishihahs/heroku-buildpack-libreoffice.git" > .buildpacks
+    
+Heroku's Java buildpack requires a `pom.xml`, so if you don't have one, create a dummy:
 
-[Version 0.12.2.1 released on January 19, 2015](https://github.com/rafaelp/heroku-buildpack-wkhtmltopdf/tree/0.12.2.1)
+    echo '<project><modelVersion>4.0.0</modelVersion><groupId>com.dummy</groupId><artifactId>dummy</artifactId><version>1.0-SNAPSHOT</version><packaging>pom</packaging></project>' > pom.xml
+    
+Finally:
+    
+    git push heroku master
+    
+Build
+-----
 
-[Version 0.12.1 released on June 26, 2014](https://github.com/rafaelp/heroku-buildpack-wkhtmltopdf/tree/0.12.1)
+Binaries used in the buildpack are prebuilt and hosted on SourceForge for convenience, but you can build them yourself like so:
 
-This branch works with version `0.12.2.1`
+    heroku create --buildpack https://github.com/heroku/heroku-buildpack-java.git
+    
+Make sure you create a dummy `pom.xml` (as shown above in Usage), and after pushing:
 
-### Stack
+    heroku run bash
+    ./build/libreoffice.sh
+    
+The binaries will be in `$temp_dir/release`.
 
-This is designed to be used on [Cedar-14 Stack](https://devcenter.heroku.com/articles/cedar).
+License
+--------
 
-## Usage
-
-Add a `.buildpacks` file to the root of your repo that contains this buildpack URL and your real buildpack URL:
-
-    https://github.com/rafaelp/heroku-buildpack-wkhtmltopdf#0.12.2.1
-    https://github.com/heroku/heroku-buildpack-ruby
-
-Then create an application using the multi buildpack:
-
-    $ heroku create --stack cedar-14 --buildpack https://github.com/ddollar/heroku-buildpack-multi
-
-or configure an existing application:
-
-    $ heroku config:set BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi
-
-Deploy your applicatio.
-
-    $ git push heroku master
-
-Remember to clean your repository cache if you are updating the version of buildpack. To do that, run:
-
-    $ heroku plugins:install https://github.com/heroku/heroku-repo.git
-    $ heroku repo:purge_cache -a appname
-
-You can verify that everything is properly installed by running the following command:
-
-    $ heroku run "wkhtmltopdf -V"
-
-The output should be:
-
-    wkhtmltopdf 0.12.2.1 (with patched qt)
-
-## Issues
-
-If you have problems, please create a [Github Issue](https://github.com/rafaelp/heroku-buildpack-wkhtmltopdf/issues).
-
-## Credits
-
-heroku-buildpack-wkhtmltopdf was originally written by [Rafael Lima](http://rafael.adm.br).
-
-Working at [Boleto Simples](https://boletosimples.com.br)
-
-Github: [http://github.com/rafaelp](http://github.com/rafaelp)
-
-Twitter: [http://twitter.com/rafaelp](http://twitter.com/rafaelp)
-
-## License
-
-heroku-buildpack-wkhtmltopdf is Copyright © 2014 Rafael Lima. It is free software, and may be redistributed under the terms specified in the [LICENSE](https://github.com/rafaelp/heroku-buildpack-wkhtmltopdf/blob/master/LICENSE) file.
+Licensed under the MIT License. See `LICENSE` file.

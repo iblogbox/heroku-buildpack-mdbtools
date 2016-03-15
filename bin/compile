@@ -5,9 +5,6 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-echo "-----> Installing fonts"
-apt-get install latex-cjk-all
-
 # config
 VERSION="5.0.2"
 MINOR_VERSION="5.0"
@@ -71,5 +68,3 @@ echo 'export PATH="$HOME/vendor/libreoffice/program:/app/vendor/libreoffice/deps
 
 # configure LD_LIBRARY_PATH to include dependencies
 echo 'export LD_LIBRARY_PATH="$HOME/vendor/libreoffice/deps/lib:$LD_LIBRARY_PATH"' >> $PROFILE_PATH
-
-fc-cache -f -v
